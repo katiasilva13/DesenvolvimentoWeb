@@ -10,6 +10,7 @@
         $qtd = filter_input(INPUT_POST, "qtd", FILTER_SANITIZE_STRING);
         $precoCompra = filter_input(INPUT_POST, "precoCompra", FILTER_SANITIZE_STRING);
         $precoVenda = filter_input(INPUT_POST, "precoVenda", FILTER_SANITIZE_STRING);
+        $id = filter_input(INPUT_POST, "id", FILTER_SANITIZE_STRING);
 
         include("../model/Produto.php");
         $alterProduto = new Produto();
