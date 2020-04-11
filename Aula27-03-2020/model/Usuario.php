@@ -1,7 +1,7 @@
 <?php
 class Usuario
 {
-  private $nome, $email, $login, $senha, $id;
+  private $nome, $email, $login, $senha, $id, $ativo;
   private $conexao;
 
   function __construct()
@@ -124,5 +124,6 @@ class Usuario
   public function getLogin(){ return $this->login;}
   public function getSenha(){ return $this->senha;}
   public function getId(){ return $this->id;}
+  public function getAtivo(){ return $this->ativo;}
 }
 ?>

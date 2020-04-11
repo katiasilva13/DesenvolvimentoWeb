@@ -26,6 +26,6 @@
           header('location: ../view/alterarUsuario.php?mensagem=erro');
       }
   }else{
-      header('location: ../view/formularioUsuaraio.php?mensagem=erro');
+      header('location: ../view/formularioUsuario.php?mensagem=erro');
   }
 ?>
