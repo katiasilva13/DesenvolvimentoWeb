@@ -54,7 +54,7 @@
            <th>LOGIN</th>
            <th>E-MAIL</th>
            <th>Data Cadastro</th>
-           <th>ALTERAÇÃO</th>
+           <th>Data Alteração</th>
            <th colspan="2">AÇÃO</th>
 
            <?php
