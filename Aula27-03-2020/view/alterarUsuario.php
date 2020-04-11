@@ -42,7 +42,8 @@
           if ( !isset( $_GET ) || empty( $_GET ) ) {
         	   //$erro = 'Nada foi postado.';
           }else{
-            if(!$_GET["id"]){              
+        //  if(!$_GET["id"]){   
+            if(empty($_GET["id"])){            
               if ($_GET["mensagem"]){
                 $mensagem = $_GET["mensagem"];
                 if($mensagem=="sucesso"){
@@ -59,7 +60,8 @@
                 <?php
                 }
               }
-          }elseif($_GET["id"]){
+   //     }elseif($_GET["id"]){
+          }elseif(!empty($_GET["id"])){ 
             $id = $_GET["id"];//2
             $tipo = "unico";
             include("../controller/relatorioUsuario.php");
