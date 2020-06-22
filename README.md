@@ -1,4 +1,4 @@
-# DesenvolvimentoWeb
+# Desenvolvimento Web
 5º período, Engenharia de Software
 
 ##  Sistema de compras
@@ -7,16 +7,26 @@
 
 Rotinas para manter os Usuários e os Produtos (insert, update, select e delete)
 
-Lembre-se que apenas o usuário logado pode alterar a sua senha.
+Só o usuário logado pode alterar a sua senha.
 
 ### 2 - Parte 2 do sistema
 
-O carrinho está funcionando, contudo, ficou para vocês terminarem:
-
-alterar e excluir o item do carrinho.
+Rotinas para Compra e ItensCompra (insert, update, select e delete)
 
 ### 3 - Melhoria de performance do sistema
 
-Escolher uma classe e passar ela de Mysqli para PDO (a classe toda, isso inclui, insert, update, select e delete)
+Passar Usuário de Mysqli para PDO (a classe toda, isso inclui, insert, update, select e delete)
 
-Caso tenha terminado o projeto e deseja expandir seus conhecimentos, coloque o PDO para o sistema todo, mas não é obrigatório.
+### 4 - Pontos para melhoria
+
+Passar todas as classes de Mysqli para PDO (a classe toda, isso inclui, insert, update, select e delete)
+
+Realizar verificação antes de qualquer delete
+
+Criar Fornecedor e Carrinho (substituir Compras e ItensCompra)
+
+Rotinas para manter Carrinho (insert, update, select e delete itens do carrinho)
+
+Rotinas para manter Fornecedor (insert, update, select e delete)
+
+
