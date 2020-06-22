@@ -19,6 +19,8 @@ Passar Usuário de Mysqli para PDO (a classe toda, isso inclui, insert, update, 
 
 ### 4 - Pontos para melhoria
 
+Realizar verificações e alterações em Produto ao alterar ItensCompra
+
 Passar todas as classes de Mysqli para PDO (a classe toda, isso inclui, insert, update, select e delete)
 
 Realizar verificação antes de qualquer delete
@@ -28,5 +30,3 @@ Criar Fornecedor e Carrinho (substituir Compras e ItensCompra)
 Rotinas para manter Carrinho (insert, update, select e delete itens do carrinho)
 
 Rotinas para manter Fornecedor (insert, update, select e delete)
-
-
