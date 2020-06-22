@@ -162,4 +162,3 @@ class Produto
   public function getId(){ return $this->id;}
   public function getAtivo(){ return $this->ativo;}
 }
-?>

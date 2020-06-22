@@ -1,5 +1,5 @@
 <?php
-    //require("verificarLogin.php");
+//require("verificarLogin.php");
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
@@ -21,7 +21,7 @@
 
 
     <div class="container">
-          
+
         <!-- Conteúdo aqui -->
         <h1>Formulário de Login</h1>
         <div class="row">
@@ -32,7 +32,7 @@
                 } else {
                     $mensagem = $_GET["mensagem"];
                     if ($mensagem == "sucesso") {
-                    ?>
+                ?>
                         <div class="alert alert-success" role="alert">
                             Logado
                         </div>

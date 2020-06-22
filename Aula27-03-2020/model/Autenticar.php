@@ -8,12 +8,15 @@ class Autenticar{
     $conectar = new Conectar();
     $this->conexao=$conectar->conectar();
   }
+  
   public function getConexao(){
     return $this->conexao;
   }
+
   public function getAutenticado(){
     return $this->autenticado;
   }
+
   public function autenticarUsuario($usuario, $senha){
     $this->usuario = $usuario;
     $this->senha = $senha;
@@ -27,6 +30,7 @@ class Autenticar{
         echo "Não Logado";
       }
   }
+
   public function buscarUsuario($usuario, $senha){
     $senha = md5($senha);  
     if($this->getConexao()){
@@ -41,6 +45,7 @@ class Autenticar{
       echo "Erro";
     }
   }
+
   public function validarLogin(){
     if($this->getAutenticado()){
       return 1;
@@ -48,6 +53,7 @@ class Autenticar{
       return 0;
     }
   }
+
   public function deslogar(){
     if($this->getConexao()->close()){
       return 1;
@@ -57,5 +63,3 @@ class Autenticar{
 
   }
 }
-
- ?>

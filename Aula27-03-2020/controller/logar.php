@@ -9,9 +9,6 @@ if (isset($_POST)){
         include("../model/Autenticar.php");
         $autenticarUsuario = new Autenticar();
         $logon = $autenticarUsuario->autenticarUsuario($usuario, $senha);
-
-    //    print_r($usuario, $senha);
-    //    exit;
         
         if ($logon){
             $_SESSION["id"] = $logon[0]["id"];

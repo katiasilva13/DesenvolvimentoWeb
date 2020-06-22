@@ -29,8 +29,7 @@
           <?php
           $tipo = "usuario";
           include("../controller/relatorioUsuario.php");
-          //print_r($retorno);
-
+          
           $i = 1;
           foreach ($retorno as $value) {
             $id = $value["id"];

@@ -101,12 +101,12 @@
                 <?php endforeach; ?>
                 <!-- fecha foreach -->
 
-
               </table>
             </div>
             <div class="row">
               <div class="alert alert-success" role="alert">
                 <h4>TOTAL RELATÓRIO = R$ <?= number_format($total, 2, ',', '.'); ?> </h4>
+                
                 <?php
                 echo "Número de compras retornadas = " .  count($retornoCompra);
                 if (count($retornoCompra) > 0) {
@@ -114,10 +114,10 @@
                 } else $media = 0;
 
                 echo "<br>Valor Médio = R$ " . number_format($media, 2, ',', '.');
-
                 echo "<br>Menor Compra = " . $menor;
                 echo "<br>Maior Compra = " . $maior;
                 ?>
+
               </div>
             </div>
           </div>
