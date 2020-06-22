@@ -3,12 +3,12 @@ class Produto
 {
   private $nomeProduto, $qtd, $precoCompra, $precoVenda, $id, $ativo;
   private $conexao;
-  function __construct()
-  {
-    include("Conexao.php");
-    $conectar = new Conectar();
-    $this->conexao = $conectar->conectar();
-  }
+    function __construct()
+    {
+      include("Conexao.php");
+      $conectar = new Conectar();
+      $this->conexao = $conectar->conectar();
+    }
 
   public function getConexao() {
     return $this->conexao;
@@ -21,12 +21,14 @@ class Produto
     $this->precoCompra = $precoCompra;
     $this->precoVenda = $precoVenda;
     $dataCadastro = date("Y-m-d H:i:s");
+    $ativo = 1;
 
     if ($this->getConexao()) {
-      echo $query = "INSERT INTO produto (nomeProduto, qtd, precoCompra, precoVenda, dataCadastro)
-         VALUE ('{$this->getNomeProduto()}', '{$this->getQtd()}', '{$this->getPrecoCompra()}','{$this->getPrecoVenda()}', '{$dataCadastro}'
+      echo $query = "INSERT INTO produto (nomeProduto, qtd, precoCompra, precoVenda, dataCadastro, ativo)
+         VALUE ('{$this->getNomeProduto()}', '{$this->getQtd()}', '{$this->getPrecoCompra()}',
+         '{$this->getPrecoVenda()}', '{$dataCadastro}', '{$ativo}'
          )";
-        exit;
+       // exit;
       $insert = $this->conexao->query($query);
       if ($this->conexao->affected_rows) {
         return 1;
@@ -40,7 +42,7 @@ class Produto
 
   public function relatorioSimples() {
     if ($this->getConexao()) {
-      $query = "SELECT * FROM produto";
+      $query = "SELECT * FROM produto order by nomeProduto asc";
       $busca = $this->conexao->query($query);
 
       $retornoBanco = array(); //array dinamico
@@ -116,6 +118,42 @@ class Produto
     }
   }
 
+  public function devolveCompra($idCompra){
+    if($this->getConexao()){
+      $query = "SELECT c.id, c.idUsuario, c.formaPagamento, u.id, u.nome FROM compra as c, usuario as u
+                where c.idUsuario = u.id  and c.id = ". $idCompra;
+  
+      $busca = $this->conexao->query($query);
+  
+      $retornoBanco = array();
+      while ($linha = $busca->fetch_assoc()) {
+        $retornoBanco[] = $linha;
+      }
+      return $retornoBanco;
+    }else{
+      echo "Erro";
+    }
+  }
+
+  public function produtosCompra($idCompra){
+
+    if($this->getConexao()){
+  $query = "SELECT p.nomeproduto, i.quantidade, i.precoOriginalProduto, i.desconto, i.precoProduto, i.idProduto, i.id 
+              FROM itensCompra as i, produto as p where i.idProduto = p.id and i.idCompra = ". $idCompra;//
+  
+      $busca = $this->conexao->query($query);
+  
+      $retornoBanco = array();
+      while ($linha = $busca->fetch_assoc()) {
+        $retornoBanco[] = $linha;
+      }
+      return $retornoBanco;
+    }else{
+      echo "Erro";
+    }
+  }
+
+
   //método assessores ou modificadores  
   public function getNomeProduto(){ return $this->nomeProduto;}
   public function getQtd(){ return $this->qtd;}
@@ -124,3 +162,4 @@ class Produto
   public function getId(){ return $this->id;}
   public function getAtivo(){ return $this->ativo;}
 }
+?>

@@ -6,124 +6,172 @@ class Usuario
 
   function __construct()
   {
-    include ("Conexao.php");
+    include("Conexao.php");
     $conectar = new Conectar();
-    $this->conexao=$conectar->conectar();
+    $this->conexao = $conectar->conectar();
   }
 
-  public function getConexao() {
+  public function getConexao()
+  {
     return $this->conexao;
   }
 
-  public function addUsuario($nome, $email, $login, $senha) {
-    $this->nome = $nome;
-    $this->email = $email;
-    $this->login = $login;
-    $this->senha = $senha;
-    $dataCadastro = date("Y-m-d H:i:s");
+  public function addUsuario($nome, $email, $login, $senha)
+  {
 
-    if ($this->getConexao()) {
-      //verifica se esta conectado ao BD
-      //prepar a string de inserção na tabela
-      echo $query = "INSERT INTO usuario (nome, email, login, senha, dataCadastro)
-      VALUE ('{$this->getNome()}', '{$this->getEmail()}', '{$this->getLogin()}','{$this->getSenha()}', '{$dataCadastro}'
-          )";
-    //  exit;
-      //executa o método query para realizar uma consulta (insert, select, alter, drop) ao banco
-      $insert = $this->conexao->query($query);
-      //verificar se a tabela foi afetada
-      if ($this->conexao->affected_rows) {
+    try {
+      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
+      $stmt = $pdo->prepare("INSERT INTO usuario (nome, email, login, senha, dataCadastro) 
+    VALUES (:nome, :email, :login, :senha, :dataCadastro) ");
+      $senha = md5($senha);
+      $stmt->bindValue(':email', $email);
+      $stmt->bindValue(':nome', $nome);
+      $stmt->bindValue(':login', $login);
+      $stmt->bindValue(':senha', $senha);
+
+      $dataCadastro = date("Y-m-d H:i:s");
+      $stmt->bindValue(':dataCadastro', $dataCadastro);
+
+      $stmt->execute();
+      $inserted = $stmt->rowCount();
+
+      if ($inserted != 0) {
         return 1;
       } else {
         return 0;
       }
-    } else {
-      echo "Não conectado ao BD";
+    } catch (Exception $e) {
+      echo "Não conectado ao BD" . $e->getMessage();
     }
   }
 
-  public function relatorioSimples() {
-    if ($this->getConexao()) {
-      $query = "SELECT * FROM usuario";
-      $busca = $this->conexao->query($query);
+  public function relatorioSimples()
+  {
 
-      $retornoBanco = array(); //array dinamico
-      while ($linha = $busca->fetch_array()) {
-        $retornoBanco[] = $linha;
+    try {
+      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
+      $stmt = $pdo->query("SELECT id, nome, email, login, senha, dataCadastro, dataAlteracao
+       FROM usuario u ORDER BY nome ASC");
+      $retornoBanco = array();
+      while ($row = $stmt->fetch()) {
+        $retornoBanco[] = $row;
       }
       return $retornoBanco;
-    } else {
-      echo "Erro";
+    } catch (Exception $e) {
+      echo "Erro ao buscar relatorio" . $e->getMessage();
     }
   }
 
-  public function relatorioUnico($id) {
-    if ($this->getConexao()) {
-      $query = "SELECT * FROM usuario where id = " . $id; //2
-      $busca = $this->conexao->query($query);
+  public function relatorioUnico($id)
+  {
+    try {
+      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
+      $stmt = $pdo->prepare("SELECT * FROM usuario WHERE id=:id");
+      $stmt->execute(['id' => $id]);
+      $retornoBanco = array();
+      while ($linha = $stmt->fetch()) {
+        $retornoBanco[] = $linha;
+      }
+
+      return $retornoBanco;
+    } catch (Exception $e) {
+      echo "Erro ao buscar usuario" . $e->getMessage();
+    }
+  }
+
+  public function alterUsuario($nome, $email, $login, $id)
+  {
+    try {
+      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
+
+      $sql = "UPDATE usuario SET nome=?, email=?, login=? WHERE id=?";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute([$nome, $email, $login, $id]);
+      $inserted = $stmt->rowCount();
+
+      if ($inserted != 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } catch (Exception $e) {
+      echo "Erro ao alterar usuario" . $e->getMessage();
+    }
+  }
+
+  public function deleteUsuario($id)
+  {
+    try {
+      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
+
+      $sql = "DELETE FROM usuario WHERE id =?";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute([$id]);
+      $inserted = $stmt->rowCount();
+
+      if ($inserted != 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } catch (Exception $e) {
+      echo "Erro ao alterar usuario" . $e->getMessage();
+    }
+  }
+
+  public function alterPerfilUsuario($nome, $email, $login, $id, $senhaAtual, $novaSenha)
+  {
+    try {
+      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
 
       $retornoBanco = array();
-      while ($linha = $busca->fetch_assoc()) {
-        //echo $row["nome"];
-        $retornoBanco[] = $linha;
+      $retornoBanco[] = $this->relatorioUnico($id);
+
+      if ($retornoBanco[0][0]["senha"] == md5($senhaAtual)) {
+
+        $senha = md5($novaSenha);
+        $sql = "UPDATE usuario SET nome=?, email=?, login=?, senha=? WHERE id=?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$nome, $email, $login, $senha, $id]);
+        $inserted = $stmt->rowCount();
+
+
+        if ($inserted != 0) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
-      return $retornoBanco;
-    } else {
-      echo "Erro";
+    } catch (Exception $e) {
+      echo "Erro ao alterar usuario" . $e->getMessage();
     }
+
   }
 
-  public function alterUsuario($nome, $email, $login, $id) {
-    $this->nome = $nome;
-    $this->email = $email;
-    $this->login = $login;
-    $this->id = $id;
 
-    if ($this->getConexao()) {
-      $query = "UPDATE usuario SET
-          nome = '{$this->getNome()}',
-          email = '{$this->getEmail()}',
-          login = '{$this->getLogin()}'
-
-          WHERE id = '{$this->getId()}'"; //2
-
-      //executa o método query para realizar uma consulta (insert, select, alter, drop) ao banco
-      $alter = $this->conexao->query($query);
-      //verificar se a tabela foi afetada
-      if ($this->conexao->affected_rows) {
-        return 1;
-      } else {
-        return 0;
-      }
-    } else {
-      echo "Não conectado ao BD";
-    }
+  //método assessores ou modificadores
+  public function getNome()
+  {
+    return $this->nome;
   }
-
-  public function deleteUsuario($id) {
-    $this->id = $id;
-
-    if ($this->getConexao()) {
-      $query = "DELETE FROM usuario
-                WHERE id = '{$this->getId()}'";
-      $delete = $this->conexao->query($query);
-      //verificar se a tabela foi afetada
-      if ($this->conexao->affected_rows) {
-        return 1;
-      } else {
-        return 0;
-      }
-    } else {
-      echo "Não conectado ao BD";
-    }
+  public function getEmail()
+  {
+    return $this->email;
   }
-
-//método assessores ou modificadores
-  public function getNome(){ return $this->nome;}
-  public function getEmail(){ return $this->email;}
-  public function getLogin(){ return $this->login;}
-  public function getSenha(){ return $this->senha;}
-  public function getId(){ return $this->id;}
-  public function getAtivo(){ return $this->ativo;}
+  public function getLogin()
+  {
+    return $this->login;
+  }
+  public function getSenha()
+  {
+    return $this->senha;
+  }
+  public function getId()
+  {
+    return $this->id;
+  }
+  public function getAtivo()
+  {
+    return $this->ativo;
+  }
 }
-?>

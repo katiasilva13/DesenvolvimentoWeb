@@ -15,8 +15,18 @@
           $email = filter_input(INPUT_POST, "email");
         }
         include("../model/Usuario.php");
+        
         $alterUsuario = new Usuario();
-        $i = $alterUsuario->alterUsuario($nome, $email, $login, $id);
+        if (!empty($_POST["senhaAtual"]) &&
+    		    !empty($_POST["novaSenha"])
+        ){
+          $senhaAtual = filter_input(INPUT_POST, "senhaAtual", FILTER_SANITIZE_STRING);
+          $novaSenha = filter_input(INPUT_POST, "novaSenha", FILTER_SANITIZE_STRING);
+          $i = $alterUsuario->alterPerfilUsuario($nome, $email, $login, $id, $senhaAtual, $novaSenha);
+        }else {
+          $i = $alterUsuario->alterUsuario($nome, $email, $login, $id);
+        }               
+        
         if ($i){
             header('location: ../view/alterarUsuario.php?mensagem=sucesso');
         }else{
@@ -26,6 +36,6 @@
           header('location: ../view/alterarUsuario.php?mensagem=erro');
       }
   }else{
-      header('location: ../view/formularioUsuario.php?mensagem=erro');
+      header('location: ../view/formUsuario.php?mensagem=erro');
   }
 ?>

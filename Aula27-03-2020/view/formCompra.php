@@ -3,8 +3,9 @@ require_once("../verificarLogin.php");
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
+
 <head>
-<meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title></title>
   <!--<link rel="stylesheet" href="bootstrap-4.1.3-dist/css/bootstrap.min.css">-->
@@ -16,11 +17,11 @@ require_once("../verificarLogin.php");
   <link rel="mask-icon" href="/docs/4.4/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
   <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon.ico">
 
+</head>
 
-  </head>
-  <body>
-    
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">NOME DO SISTEMA</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -79,102 +80,94 @@ require_once("../verificarLogin.php");
         </div>
       </nav>  
 
-    <div class="container">
-      <!-- Conteúdo aqui -->
-      <h1>Formulário de Alteração</h1>
-      <div class="row">
-        <div class="col">
+  <!-- <div class="container-fluid"> utilizado para largura total-->
+  <div class="container">
+    <!-- Conteúdo aqui -->
+    <h1>Formulário de Compra</h1>
+    <div class="row">
+      <div class="col">
+        <?php
+        if (!isset($_GET) || empty($_GET)) {
+          //$erro = 'Nada foi postado.';
+        } else {
+          if ($_GET["mensagem"]!= "erro") {
+        ?>
+            <div class="alert alert-success" role="alert">
+              Compra realizada com sucesso!!!
+            </div>
           <?php
-          if ( !isset( $_GET ) || empty( $_GET ) ) {
-        	   //$erro = 'Nada foi postado.';
-          }else{
-        //  if(!$_GET["id"]){   //undefined index
-            if(empty($_GET["id"])){              
-              if ($_GET["mensagem"]){
-                $mensagem = $_GET["mensagem"];
-                if($mensagem=="sucesso"){
-                  ?>
-                  <div class="alert alert-success" role="alert">
-                    Produto Alterado com sucesso!!!
+          } else if ($_GET["mensagem"] == "erroFinalizar") {
+            ?>
+                <div class="alert alert-success" role="alert">
+                Ocorreu um erro ao finalizar a compra!!!
                 </div>
-                <?php
-                }elseif($mensagem=="erro") {
-                ?>
-                <div class="alert alert-danger" role="alert">
-                  Ocorreu um erro ao alterar o Produto!!!
-                </div>
-                <?php
-                }
-              }              
-      //    }elseif($_GET["id"]){   //undefined index
-            }elseif(!empty($_GET["id"])){ 
-            $id = $_GET["id"];
-            $tipo = "unico";
-            include("../controller/relatorioProduto.php");
-         //   print_r($retorno);
-            foreach ($retorno as $value){
-              ?>
-              <form action="../controller/alterarProdutos.php" method="post">
-                
-                <div class="row">
-                  <div class="col-4">
-                    <label for="nomeProduto">Nome:</label>
-                    <input type="text" id="nomeProduto" name="nomeProduto" value='<?=$value["nomeProduto"];?>' class="form-control" placeholder="Nome do produto">
-                  </div>
-
-                  <div class="col-4">
-                    <label for="qtd">Quantidade:</label>
-                    <input type="number" id="qtd" name="qtd" value=<?=$value["qtd"];?> class="form-control" placeholder="Quantidade">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    &nbsp;
-                  </div>
-                </div>
-                
-                <div class="row">
-                  <div class="col-3">
-                    <label for="precoCompra">Preço de compra (ex: 21.00):</label>
-                    <input type="floatval" id="precoCompra" name="precoCompra" value=<?=$value["precoCompra"];?> class="form-control" placeholder="Preço de compra">
-                  </div>
-
-                  <div class="col-3">
-                    <label for="precoVenda">Preço de venda (ex: 10.99):</label>
-                    <input type="floatval" id="precoVenda" name="precoVenda" value=<?=$value["precoVenda"];?> class="form-control" placeholder="Preço de venda">
-                  </div>
-
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    &nbsp;
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-12">
-                    <input type="hidden" name="id" value=<?=$value["id"];?>>
-                    <button type="submit" class="btn btn-primary">Alterar</button>
-                    <button type="reset" class="btn btn-primary">Limpar</button>
-                  </div>
-                </div>
-
-              </form>
-            <?php
+              <?php
+              } else{
+          ?>
+            <div class="alert alert-danger" role="alert">
+              Ocorreu um erro ao gravar a compra!!!
+            </div>
+        <?php
           }
         }
-      }
+        ?>
+      </div>
+    </div>
+    <form action="../controller/cadCompra.php" method="post">
 
- ?>  </div></div>
- <div class="row">
-   <div class="col">
-     &nbsp;
-   </div>
- </div>
+      <div class="row">
+        <div class="col-4">
+          <label for="nomeProduto">Nome:</label>
 
- <footer class="bd-footer text-muted">
+          <?php
+          include("../model/Usuario.php");
+          $objetoRetorno = new Usuario();
+          $retorno = $objetoRetorno->relatorioSimples();
+          ?>
+          <select class="form-control" name="idUsuario">
+
+            <?php
+            foreach ($retorno as $key => $value) {
+            ?>
+              <option value=<?= $value["id"] ?>><?= $value["nome"]; ?></option>
+            <?php
+            }
+            ?>
+          </select>
+        </div>
+        <div class="col-4">
+          <label for="formaPagamento">Forma de Pagamento:</label>
+          <select class="form-control" name="formaPagamento">
+            <option value="1">A vista</option>
+            <option value="1">1 Parcela</option>
+            <option value="2">2 Parcela</option>
+            <option value="3">3 Parcela</option>
+            <option value="4">4 Parcela</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          &nbsp;
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Abrir Venda nova</button>
+          <button type="reset" class="btn btn-primary">Limpar</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="row">
+    <div class="col">
+      &nbsp;
+    </div>
+  </div>
+  
+  <footer class="bd-footer text-muted">
   <a class="navbar-brand" href="#"><br>Usuário Autenticado: <?=$_SESSION["nomeUsuario"];?>
     <br>E-mail: <?=$_SESSION["emailUsuario"];?>
   </a>
@@ -186,7 +179,6 @@ require_once("../verificarLogin.php");
     <script src="../bootstrap-4.4.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
 
     <!--<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>-->
-
 </body>
 
 </html>

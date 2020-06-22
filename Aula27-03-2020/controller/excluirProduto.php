@@ -15,6 +15,6 @@
           header('location: ../view/relatorioTelaProduto.php?mensagem=erro');
       }
   }else{
-      header('location: ../view/formularioProduto.php?mensagem=erro');
+      header('location: ../view/formProduto.php?mensagem=erro');
   }
 ?>

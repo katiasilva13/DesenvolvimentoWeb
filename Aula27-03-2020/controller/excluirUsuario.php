@@ -15,6 +15,6 @@
           header('location: ../view/relatorioTelaUsuario.php?mensagem=erro');
       }
   }else{
-      header('location: ../view/formularioUsuario.php?mensagem=erro');
+      header('location: ../view/formUsuario.php?mensagem=erro');
   }
 ?>

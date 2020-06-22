@@ -3,10 +3,11 @@
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title></title>
+    <!--<link rel="stylesheet" href="bootstrap-4.1.3-dist/css/bootstrap.min.css">-->
     <link href="../bootstrap-4.4.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="apple-touch-icon" href="/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
     <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
@@ -18,6 +19,7 @@
 
   </head>
   <body>
+
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">NOME DO SISTEMA</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,6 +58,11 @@
                 </div>
               </li>
 
+           
+              
+              <li class="nav-item">
+                <a class="nav-link" href="ProximaVersao.php">Próximas versões</a>
+              </li>
               
               <li class="nav-item">
                 <a class="nav-link" href="../deslogar.php">Sair</a>
@@ -77,90 +84,35 @@
         </div>
       </nav>  
 
-<div class="container">
-  <div class="row">
-    <div class="col">
-      &nbsp;
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <h1>Relatório de Produtos</h1>
-      <br>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="table-responsive">
-         <table class="table">
-           <th>ID</th>
-           <th>NOME</th>
-           <th>QUANTIDADE</th>
-           <th>PRECO COMPRA</th>
-           <th>PRECO VENDA</th>
-           <th>Data Cadastro</th>
-           <th>Data Alteração</th>
-           <th colspan="2">AÇÃO</th>
-
-           <?php
-            $tipo = "produto";
-            include("../controller/relatorioProduto.php");
-            //print_r($retorno);
-
-            foreach ($retorno as $value) {
-              $id = $value["id"];
-              ?>
-              <tr>
-                <td><?=$value["id"];?></td>
-                <td><?=$value["nomeProduto"];?></td>
-                <td><?=$value["qtd"];?></td>
-                <td><?=$value["precoCompra"];?></td>
-                <td><?=$value["precoVenda"];?></td>
-                <td>
-                <?php
-                  $dataCadastro = new DateTime($value["dataCadastro"]);
-                  echo $dataCadastro->format("d/m/Y H:i:s") . ' ';
-                ?>
-                </td>
-                <td>
-                <?php
-                  $dataAlteracao = new DateTime($value["dataAlteracao"]);
-                  echo $dataAlteracao->format("d/m/Y H:i:s") . ' ';
-                ?>
-                </td>
-                <td><?php echo "<a href=alterarProduto.php?id=$id>
-                    [ALTERAR]
-                  </a>";?>
-                </td>
-                <td><?php echo "<a href=../controller/excluirProduto.php?id=$id>
-                    [EXCLUIR]
-                  </a>";?>
-                </td>
-              </tr>
-              <?php
-            }
-            ?>
-         </table>
-         <?php
-            echo "Foram encontrados " . count($retorno) . " registros";
-          ?>
+    <div class="container">
+      <!-- Conteúdo aqui -->
+      <div class="row">
+        <div class="col">
+            &nbsp;
         </div>
+      </div>
+      <div class="row">
+        <div class="col">
+            <br>- Perfil do Usuário (Permitir alterar os dados e a senha)
+            <br>- Criar novos Filtros para os relatorios (Aniversariantes do mês, entre outros)
+            <br>- Quantidade de produto em estoque
+            <br>- Total em estoque
+            <br>- Entre outros
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      &nbsp;
+    <div class="row">
+      <div class="col">
+        &nbsp;
+      </div>
     </div>
-  </div>
 <footer class="bd-footer text-muted">
-<p>&copy; Company 2017-2019</p>
+  <p>&copy; Company 2017-2019</p>
 </footer>
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src=" /site/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
-  <script src="../bootstrap-4.4.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+          <script>window.jQuery || document.write('<script src=" /site/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
+    <script src="../bootstrap-4.4.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
 
-  <!--<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>-->
-
-  </body>
-  </html>
+    <!--<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>-->
+    </body>
+    </html>

@@ -1,25 +1,23 @@
 <?php
-require_once("../verificarLogin.php");
+  require_once("../verificarLogin.php");
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
-<head>
-<meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title></title>
-  <!--<link rel="stylesheet" href="bootstrap-4.1.3-dist/css/bootstrap.min.css">-->
-  <link href="../bootstrap-4.4.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="apple-touch-icon" href="/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-  <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-  <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-  <link rel="manifest" href="/docs/4.4/assets/img/favicons/manifest.json">
-  <link rel="mask-icon" href="/docs/4.4/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
-  <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon.ico">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title></title>
+    <link href="../bootstrap-4.4.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="apple-touch-icon" href="/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="manifest" href="/docs/4.4/assets/img/favicons/manifest.json">
+    <link rel="mask-icon" href="/docs/4.4/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
+    <link rel="icon" href="/docs/4.4/assets/img/favicons/favicon.ico">
 
 
   </head>
   <body>
-    
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">NOME DO SISTEMA</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +55,6 @@ require_once("../verificarLogin.php");
                   <a class="dropdown-item" href="relatorioCompra.php">Relatório Geral</a>
                 </div>
               </li>
-
               
               <li class="nav-item">
                 <a class="nav-link" href="../deslogar.php">Sair</a>
@@ -77,7 +74,7 @@ require_once("../verificarLogin.php");
           <input class="form-control" type="text" placeholder="Search">
         </form>-->
         </div>
-      </nav>  
+      </nav>   
 
     <div class="container">
       <!-- Conteúdo aqui -->
@@ -88,71 +85,69 @@ require_once("../verificarLogin.php");
           if ( !isset( $_GET ) || empty( $_GET ) ) {
         	   //$erro = 'Nada foi postado.';
           }else{
-        //  if(!$_GET["id"]){   //undefined index
-            if(empty($_GET["id"])){              
+        //  if(!$_GET["id"]){     //fixed undefined index
+            if(empty($_GET["id"])){            
               if ($_GET["mensagem"]){
                 $mensagem = $_GET["mensagem"];
                 if($mensagem=="sucesso"){
                   ?>
                   <div class="alert alert-success" role="alert">
-                    Produto Alterado com sucesso!!!
+                    Usuário Alterado com sucesso!!!
                 </div>
                 <?php
                 }elseif($mensagem=="erro") {
                 ?>
                 <div class="alert alert-danger" role="alert">
-                  Ocorreu um erro ao alterar o Produto!!!
+                  Ocorreu um erro ao alterar o Usuário!!!
                 </div>
                 <?php
                 }
-              }              
-      //    }elseif($_GET["id"]){   //undefined index
-            }elseif(!empty($_GET["id"])){ 
-            $id = $_GET["id"];
+              }
+   //     }elseif($_GET["id"]){    //fixed undefined index
+          }elseif(!empty($_GET["id"])){ 
+            $id = $_GET["id"];//2
             $tipo = "unico";
-            include("../controller/relatorioProduto.php");
+            include("../controller/relatorioUsuario.php");
          //   print_r($retorno);
             foreach ($retorno as $value){
               ?>
-              <form action="../controller/alterarProdutos.php" method="post">
-                
+              <form action="../controller/alterarLogin.php" method="post">
                 <div class="row">
                   <div class="col-4">
-                    <label for="nomeProduto">Nome:</label>
-                    <input type="text" id="nomeProduto" name="nomeProduto" value='<?=$value["nomeProduto"];?>' class="form-control" placeholder="Nome do produto">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" value='<?=$value["nome"];?>' class="form-control" placeholder="Nome">
                   </div>
-
                   <div class="col-4">
-                    <label for="qtd">Quantidade:</label>
-                    <input type="number" id="qtd" name="qtd" value=<?=$value["qtd"];?> class="form-control" placeholder="Quantidade">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" value=<?=$value["email"];?> class="form-control" placeholder="Email">
                   </div>
                 </div>
-
                 <div class="row">
                   <div class="col">
                     &nbsp;
                   </div>
                 </div>
-                
                 <div class="row">
                   <div class="col-3">
-                    <label for="precoCompra">Preço de compra (ex: 21.00):</label>
-                    <input type="floatval" id="precoCompra" name="precoCompra" value=<?=$value["precoCompra"];?> class="form-control" placeholder="Preço de compra">
+                    <label for="login">Login:</label>
+                    <input type="text" id="login" name="login" value=<?=$value["login"];?> class="form-control" placeholder="Login">
+                  </div>
+                 
+                  <div class="col-2">
+                    <label for="senhaAtual">Senha Atual:</label>
+                    <input type="password" id="senhaAtual" name="senhaAtual" value=<?=$value["senha"];?> class="form-control" placeholder="Senha Atual">
                   </div>
 
-                  <div class="col-3">
-                    <label for="precoVenda">Preço de venda (ex: 10.99):</label>
-                    <input type="floatval" id="precoVenda" name="precoVenda" value=<?=$value["precoVenda"];?> class="form-control" placeholder="Preço de venda">
+                  <div class="col-2">
+                    <label for="novaSenha">Nova senha:</label>
+                    <input type="password" id="novaSenha" name="novaSenha" value=<?=$value["senha"];?> class="form-control" placeholder="Nova senha">
                   </div>
-
                 </div>
-
                 <div class="row">
                   <div class="col">
                     &nbsp;
                   </div>
                 </div>
-
                 <div class="row">
                   <div class="col-12">
                     <input type="hidden" name="id" value=<?=$value["id"];?>>
@@ -160,24 +155,25 @@ require_once("../verificarLogin.php");
                     <button type="reset" class="btn btn-primary">Limpar</button>
                   </div>
                 </div>
-
               </form>
             <?php
           }
         }
       }
 
- ?>  </div></div>
- <div class="row">
-   <div class="col">
-     &nbsp;
+?>  
    </div>
  </div>
-
- <footer class="bd-footer text-muted">
-  <a class="navbar-brand" href="#"><br>Usuário Autenticado: <?=$_SESSION["nomeUsuario"];?>
-    <br>E-mail: <?=$_SESSION["emailUsuario"];?>
-  </a>
+ <div class="row">
+    <div class="col">
+      &nbsp;
+    </div>
+  </div>
+  
+  <footer class="bd-footer text-muted">
+    <a class="navbar-brand" href="#"><br>Usuário Autenticado: <?=$_SESSION["nomeUsuario"];?>
+      <br>E-mail: <?=$_SESSION["emailUsuario"];?>
+    </a>
     <p>&copy; Company 2017-2019</p>
   </footer>
   
@@ -186,7 +182,6 @@ require_once("../verificarLogin.php");
     <script src="../bootstrap-4.4.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
 
     <!--<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>-->
-
 </body>
 
 </html>
