@@ -7,7 +7,6 @@ class Conectar
   function __construct(){
     $this->host = "localhost";
     $this->usuario = "root";
-    $this->port = 3307;
     $this->senha = "";
     $this->database = "unifamma";
   }
@@ -16,8 +15,7 @@ class Conectar
                           $this->host,
                           $this->usuario,
                           $this->senha,
-                          $this->database,
-                          $this->port
+                          $this->database
                         );
     return $this->getConectar();
   }

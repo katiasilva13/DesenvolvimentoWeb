@@ -168,7 +168,7 @@
                           if($value->valorTotal > $maior){
                             $menor = $maior;
                             $maior = $value->valorTotal;
-                          }else{
+                          }elseif ($value->valorTotal < $menor) {
                             $menor = $value->valorTotal;
                           }
                           ?>
