@@ -63,7 +63,7 @@
           if($_SESSION["id"]){
               echo "<a href=alterarPerfil.php?id=$_SESSION[id]>";
           ?>
-              <button type="submit" class="btn btn-primary">Perfil</button></a>";
+              <button type="submit" class="btn btn-primary">Perfil</button></a>
 <?php
           }
         ?>
