@@ -116,7 +116,7 @@
         include("../model/Compra.php");
         $relatorio = new Compra();
 
-        $retornoCompra = $relatorio->relatorioGeral($dataInicio, $dataTermino);
+        $retornoCompra =  $relatorio->relatorioGeral($dataInicio, $dataTermino);
         ?>
         <div class="card"><!--PONTO DE MELHORIA-->
           <div class="card-body"><!--PONTO DE MELHORIA-->
@@ -136,42 +136,46 @@
                         $maior = 0;
                         $menor = 0;
                         $i = 1;
-                        foreach ($retornoCompra as $value) {
-                        $id = $value["id"];
+                        
+                        // echo "<pre>"; print_r($retornoCompra); die();
                         ?>
+                        <?php foreach ($retornoCompra as $key => $value) :?>
+                        
                         <tr>
                           <td><?=$i++?></td>
-                          <td><?=$value["id"];?></td>
-                          <td><?=$value["nome"];?></td>
+                          <td><?=$value->id;?></td>
+                          <td><?=$value->nome;?></td>
                           <td>
 
                             <?php
-                              $dataCadastro = new DateTime($value["dataHoraCompra"]);
+                              $dataCadastro = new DateTime($value->dataHoraCompra);
                               echo $dataCadastro->format("d/m/Y H:i:s") . ' ';
                             ?>
 
                           </td>
-                          <td><?=$value["formaPagamento"];?></td>
+                          <td><?=$value->formaPagamento;?></td>
                           <td style="text-align: right;">
                             <?php
                               //PONTO DE MELHORIA
                               //$value["precoProduto"];
-                              echo  number_format($value["valorTotal"], 2, ',', '.');
+                              echo  number_format($value->valorTotal, 2, ',', '.');
                             ?>
                           </td>
                         </tr>
                         <?php
-                          $total = $total + $value["valorTotal"];
+                          $total = $total + $value->valorTotal;
 
-                          if($value["valorTotal"] > $maior){
+                          if($value->valorTotal > $maior){
                             $menor = $maior;
-                            $maior = $value["valorTotal"];
+                            $maior = $value->valorTotal;
                           }else{
-                            $menor = $value["valorTotal"];
+                            $menor = $value->valorTotal;
                           }
-                      }//fecha foreach
+                          ?>
+                      <?php endforeach; ?>
+                      <!-- fecha foreach -->
 
-                      ?>
+                      
                    </table>
             </div>
             <div class="row">

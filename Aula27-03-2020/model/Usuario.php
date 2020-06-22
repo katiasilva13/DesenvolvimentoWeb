@@ -6,172 +6,171 @@ class Usuario
 
   function __construct()
   {
-    include("Conexao.php");
+    include ("Conexao.php");
     $conectar = new Conectar();
-    $this->conexao = $conectar->conectar();
+    $this->conexao=$conectar->conectar();
   }
 
-  public function getConexao()
-  {
+  public function getConexao() {
     return $this->conexao;
   }
 
-  public function addUsuario($nome, $email, $login, $senha)
-  {
+  public function addUsuario($nome, $email, $login, $senha) {
+    $this->nome = $nome;
+    $this->email = $email;
+    $this->login = $login;
+    $this->senha = $senha;
+    $dataCadastro = date("Y-m-d H:i:s");
 
-    try {
-      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
-      $stmt = $pdo->prepare("INSERT INTO usuario (nome, email, login, senha, dataCadastro) 
-    VALUES (:nome, :email, :login, :senha, :dataCadastro) ");
-      $senha = md5($senha);
-      $stmt->bindValue(':email', $email);
-      $stmt->bindValue(':nome', $nome);
-      $stmt->bindValue(':login', $login);
-      $stmt->bindValue(':senha', $senha);
-
-      $dataCadastro = date("Y-m-d H:i:s");
-      $stmt->bindValue(':dataCadastro', $dataCadastro);
-
-      $stmt->execute();
-      $inserted = $stmt->rowCount();
-
-      if ($inserted != 0) {
+    if ($this->getConexao()) {
+      //verifica se esta conectado ao BD
+      //prepar a string de inserção na tabela
+      echo $query = "INSERT INTO usuario (nome, email, login, senha, dataCadastro)
+      VALUE ('{$this->getNome()}', '{$this->getEmail()}', '{$this->getLogin()}','{$this->getSenha()}', '{$dataCadastro}'
+          )";
+    //  exit;
+      //executa o método query para realizar uma consulta (insert, select, alter, drop) ao banco
+      $insert = $this->conexao->query($query);
+      //verificar se a tabela foi afetada
+      if ($this->conexao->affected_rows) {
         return 1;
       } else {
         return 0;
       }
-    } catch (Exception $e) {
-      echo "Não conectado ao BD" . $e->getMessage();
+    } else {
+      echo "Não conectado ao BD";
     }
   }
 
-  public function relatorioSimples()
-  {
+  public function relatorioSimples() {
+    if ($this->getConexao()) {
+      $query = "SELECT
+      id, nome, email, login, senha, dataCadastro, dataAlteracao FROM usuario
+      order by nome asc
+      ";
+      $busca = $this->conexao->query($query);
 
-    try {
-      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
-      $stmt = $pdo->query("SELECT id, nome, email, login, senha, dataCadastro, dataAlteracao
-       FROM usuario u ORDER BY nome ASC");
-      $retornoBanco = array();
-      while ($row = $stmt->fetch()) {
-        $retornoBanco[] = $row;
-      }
-      return $retornoBanco;
-    } catch (Exception $e) {
-      echo "Erro ao buscar relatorio" . $e->getMessage();
-    }
-  }
-
-  public function relatorioUnico($id)
-  {
-    try {
-      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
-      $stmt = $pdo->prepare("SELECT * FROM usuario WHERE id=:id");
-      $stmt->execute(['id' => $id]);
-      $retornoBanco = array();
-      while ($linha = $stmt->fetch()) {
+      $retornoBanco = array(); //array dinamico
+      while ($linha = $busca->fetch_array()) {
         $retornoBanco[] = $linha;
       }
-
       return $retornoBanco;
-    } catch (Exception $e) {
-      echo "Erro ao buscar usuario" . $e->getMessage();
+    } else {
+      echo "Erro";
     }
   }
 
-  public function alterUsuario($nome, $email, $login, $id)
-  {
-    try {
-      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
-
-      $sql = "UPDATE usuario SET nome=?, email=?, login=? WHERE id=?";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute([$nome, $email, $login, $id]);
-      $inserted = $stmt->rowCount();
-
-      if ($inserted != 0) {
-        return 1;
-      } else {
-        return 0;
-      }
-    } catch (Exception $e) {
-      echo "Erro ao alterar usuario" . $e->getMessage();
-    }
-  }
-
-  public function deleteUsuario($id)
-  {
-    try {
-      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
-
-      $sql = "DELETE FROM usuario WHERE id =?";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute([$id]);
-      $inserted = $stmt->rowCount();
-
-      if ($inserted != 0) {
-        return 1;
-      } else {
-        return 0;
-      }
-    } catch (Exception $e) {
-      echo "Erro ao alterar usuario" . $e->getMessage();
-    }
-  }
-
-  public function alterPerfilUsuario($nome, $email, $login, $id, $senhaAtual, $novaSenha)
-  {
-    try {
-      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
+  public function relatorioUnico($id) {
+    if ($this->getConexao()) {
+      $query = "SELECT * FROM usuario where id = " . $id; //2
+      $busca = $this->conexao->query($query);
 
       $retornoBanco = array();
-      $retornoBanco[] = $this->relatorioUnico($id);
+      while ($linha = $busca->fetch_assoc()) {
+        //echo $row["nome"];
+        $retornoBanco[] = $linha;
+      }
+      return $retornoBanco;
+    } else {
+      echo "Erro";
+    }
+  }
 
-      if ($retornoBanco[0][0]["senha"] == md5($senhaAtual)) {
+  public function alterUsuario($nome, $email, $login, $id) {
+    $this->nome = $nome;
+    $this->email = $email;
+    $this->login = $login;
+    $this->id = $id;
 
-        $senha = md5($novaSenha);
-        $sql = "UPDATE usuario SET nome=?, email=?, login=?, senha=? WHERE id=?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$nome, $email, $login, $senha, $id]);
-        $inserted = $stmt->rowCount();
+    if ($this->getConexao()) {
+      $query = "UPDATE usuario SET
+          nome = '{$this->getNome()}',
+          email = '{$this->getEmail()}',
+          login = '{$this->getLogin()}'
 
+          WHERE id = '{$this->getId()}'"; //2
 
-        if ($inserted != 0) {
+      //executa o método query para realizar uma consulta (insert, select, alter, drop) ao banco
+      $alter = $this->conexao->query($query);
+      //verificar se a tabela foi afetada
+      if ($this->conexao->affected_rows) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else {
+      echo "Não conectado ao BD";
+    }
+  }
+
+  public function deleteUsuario($id) {
+    $this->id = $id;
+
+    if ($this->getConexao()) {
+      $query = "DELETE FROM usuario
+                WHERE id = '{$this->getId()}'";
+      $delete = $this->conexao->query($query);
+      //verificar se a tabela foi afetada
+      if ($this->conexao->affected_rows) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else {
+      echo "Não conectado ao BD";
+    }
+  }
+
+  public function alterPerfilUsuario($nome, $email, $login, $id, $senhaAtual, $novaSenha){
+    $this->nome = $nome;
+    $this->email = $email;
+    $this->login = $login;
+    $this->id = $id;
+  
+    if($this->getConexao()){
+      $query = "select * from usuario WHERE id = '{$this->getId()}'";
+      $busca = $this->conexao->query($query);
+      $retornoBanco = array();
+      while ($linha = $busca->fetch_assoc()) {
+        $retornoBanco[] = $linha;
+      }
+      //print_r($retornoBanco);
+    //  exit;
+      /*echo "Banco = " . $retornoBanco[0]["senha"];
+      echo "<br>";
+      echo "Senha Atual" . md5($senhaAtual);
+      exit;*/
+      if ($retornoBanco[0]["senha"]==md5($senhaAtual)){
+        $this->senha = md5($novaSenha);
+        echo $query = "UPDATE usuario SET
+              nome = '{$this->getNome()}',
+              email = '{$this->getEmail()}',
+              login = '{$this->getLogin()}',
+              senha = '{$this->getSenha()}'
+              WHERE id = '{$this->getId()}'";//2
+  
+        $alter = $this->conexao->query($query);
+        //verificar se a tabela foi afetada
+        if ($this->conexao->affected_rows){
           return 1;
-        } else {
+        }else{
           return 0;
         }
+      }else{
+        return 0;
       }
-    } catch (Exception $e) {
-      echo "Erro ao alterar usuario" . $e->getMessage();
+    }else{
+      echo "Não conectado ao BD";
     }
-
   }
 
 
-  //método assessores ou modificadores
-  public function getNome()
-  {
-    return $this->nome;
-  }
-  public function getEmail()
-  {
-    return $this->email;
-  }
-  public function getLogin()
-  {
-    return $this->login;
-  }
-  public function getSenha()
-  {
-    return $this->senha;
-  }
-  public function getId()
-  {
-    return $this->id;
-  }
-  public function getAtivo()
-  {
-    return $this->ativo;
-  }
+//método assessores ou modificadores
+  public function getNome(){ return $this->nome;}
+  public function getEmail(){ return $this->email;}
+  public function getLogin(){ return $this->login;}
+  public function getSenha(){ return $this->senha;}
+  public function getId(){ return $this->id;}
+  public function getAtivo(){ return $this->ativo;}
 }
+?>

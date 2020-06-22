@@ -21,8 +21,8 @@ class Compra
     $dataHoraCompra = date("Y-m-d H:i:s");
 
     if($this->getConexao()){
-      echo $query = "INSERT INTO compra (idUsuario, formaPagamento, dataHoraCompra)
-      VALUE ('{$this->getIdUsuario()}', '{$this->getFormaPagamento()}', '{$dataHoraCompra}'
+      echo $query = "INSERT INTO compra (idUsuario, formaPagamento, dataHoraCompra, valorTotal)
+      VALUE ('{$this->getIdUsuario()}', '{$this->getFormaPagamento()}', '{$dataHoraCompra}', 0.00
           )";
       $insert = $this->conexao->query($query);
       //verificar se a tabela foi afetada
@@ -70,9 +70,12 @@ public function relatorioGeral($dataInicio, $dataTermino){
 
     $busca = $this->conexao->query($query);
 
-    $retornoBanco = array();//array dinamico
-    while ($linha = $busca->fetch_array()) {
-      $retornoBanco[] = $linha;
+    $retornoBanco = array();
+    while ($linha = $busca->fetch_assoc()) {
+      $obj = (object) $linha;
+      if(!empty($obj)) {
+        array_push($retornoBanco, $obj);
+      }
     }
     return $retornoBanco;
   }else{
