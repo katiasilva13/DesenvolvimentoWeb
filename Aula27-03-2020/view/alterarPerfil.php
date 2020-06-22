@@ -1,7 +1,6 @@
 <?php require_once("../verificarLogin.php"); ?>
 
 <?php require_once("header.php"); ?>
-<!-- <div class="container-fluid"> utilizado para largura total-->
 
 <div class="container">
   <!-- Conteúdo aqui -->
@@ -12,7 +11,6 @@
       if (!isset($_GET) || empty($_GET)) {
         //$erro = 'Nada foi postado.';
       } else {
-        //  if(!$_GET["id"]){     //fixed undefined index
         if (empty($_GET["id"])) {
           if ($_GET["mensagem"]) {
             $mensagem = $_GET["mensagem"];
@@ -30,12 +28,11 @@
             <?php
             }
           }
-          //     }elseif($_GET["id"]){    //fixed undefined index
         } elseif (!empty($_GET["id"])) {
           $id = $_GET["id"]; //2
           $tipo = "unico";
           include("../controller/relatorioUsuario.php");
-          //   print_r($retorno);
+
           foreach ($retorno as $value) {
             ?>
             <form action="../controller/alterarLogin.php" method="post">

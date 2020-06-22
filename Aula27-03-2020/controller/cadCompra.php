@@ -11,8 +11,6 @@
         $insertCompra = new Compra();
         $idCompra = $insertCompra->addCompra($idUsuario, $formaPagamento);
         
-       // echo $idUsuario . " " . $formaPagamento;
-       // exit;
         if ($idCompra){          
           header('location: ../view/formItensCompra.php?mensagem=compraSucesso&idCompra='.$idCompra);
         }else{

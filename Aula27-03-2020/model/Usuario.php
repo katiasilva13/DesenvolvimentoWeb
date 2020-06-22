@@ -6,16 +6,18 @@ class Usuario
 
   function __construct()
   {
-    include ("Conexao.php");
+    include("Conexao.php");
     $conectar = new Conectar();
-    $this->conexao=$conectar->conectar();
+    $this->conexao = $conectar->conectar();
   }
 
-  public function getConexao() {
+  public function getConexao()
+  {
     return $this->conexao;
   }
 
-  public function addUsuario($nome, $email, $login, $senha) {
+  public function addUsuario($nome, $email, $login, $senha)
+  {
     $this->nome = $nome;
     $this->email = $email;
     $this->login = $login;
@@ -28,7 +30,7 @@ class Usuario
       echo $query = "INSERT INTO usuario (nome, email, login, senha, dataCadastro)
       VALUE ('{$this->getNome()}', '{$this->getEmail()}', '{$this->getLogin()}','{$this->getSenha()}', '{$dataCadastro}'
           )";
-    //  exit;
+      //  exit;
       //executa o método query para realizar uma consulta (insert, select, alter, drop) ao banco
       $insert = $this->conexao->query($query);
       //verificar se a tabela foi afetada
@@ -42,7 +44,8 @@ class Usuario
     }
   }
 
-  public function relatorioSimples() {
+  public function relatorioSimples()
+  {
     if ($this->getConexao()) {
       $query = "SELECT
       id, nome, email, login, senha, dataCadastro, dataAlteracao FROM usuario
@@ -60,7 +63,8 @@ class Usuario
     }
   }
 
-  public function relatorioUnico($id) {
+  public function relatorioUnico($id)
+  {
     if ($this->getConexao()) {
       $query = "SELECT * FROM usuario where id = " . $id; //2
       $busca = $this->conexao->query($query);
@@ -76,7 +80,8 @@ class Usuario
     }
   }
 
-  public function alterUsuario($nome, $email, $login, $id) {
+  public function alterUsuario($nome, $email, $login, $id)
+  {
     $this->nome = $nome;
     $this->email = $email;
     $this->login = $login;
@@ -103,7 +108,8 @@ class Usuario
     }
   }
 
-  public function deleteUsuario($id) {
+  public function deleteUsuario($id)
+  {
     $this->id = $id;
 
     if ($this->getConexao()) {
@@ -121,13 +127,14 @@ class Usuario
     }
   }
 
-  public function alterPerfilUsuario($nome, $email, $login, $id, $senhaAtual, $novaSenha){
+  public function alterPerfilUsuario($nome, $email, $login, $id, $senhaAtual, $novaSenha)
+  {
     $this->nome = $nome;
     $this->email = $email;
     $this->login = $login;
     $this->id = $id;
-  
-    if($this->getConexao()){
+
+    if ($this->getConexao()) {
       $query = "select * from usuario WHERE id = '{$this->getId()}'";
       $busca = $this->conexao->query($query);
       $retornoBanco = array();
@@ -135,42 +142,59 @@ class Usuario
         $retornoBanco[] = $linha;
       }
       //print_r($retornoBanco);
-    //  exit;
+      //  exit;
       /*echo "Banco = " . $retornoBanco[0]["senha"];
       echo "<br>";
       echo "Senha Atual" . md5($senhaAtual);
       exit;*/
-      if ($retornoBanco[0]["senha"]==md5($senhaAtual)){
+      if ($retornoBanco[0]["senha"] == md5($senhaAtual)) {
         $this->senha = md5($novaSenha);
         echo $query = "UPDATE usuario SET
               nome = '{$this->getNome()}',
               email = '{$this->getEmail()}',
               login = '{$this->getLogin()}',
               senha = '{$this->getSenha()}'
-              WHERE id = '{$this->getId()}'";//2
-  
+              WHERE id = '{$this->getId()}'"; //2
+
         $alter = $this->conexao->query($query);
         //verificar se a tabela foi afetada
-        if ($this->conexao->affected_rows){
+        if ($this->conexao->affected_rows) {
           return 1;
-        }else{
+        } else {
           return 0;
         }
-      }else{
+      } else {
         return 0;
       }
-    }else{
+    } else {
       echo "Não conectado ao BD";
     }
   }
 
 
-//método assessores ou modificadores
-  public function getNome(){ return $this->nome;}
-  public function getEmail(){ return $this->email;}
-  public function getLogin(){ return $this->login;}
-  public function getSenha(){ return $this->senha;}
-  public function getId(){ return $this->id;}
-  public function getAtivo(){ return $this->ativo;}
+  //método assessores ou modificadores
+  public function getNome()
+  {
+    return $this->nome;
+  }
+  public function getEmail()
+  {
+    return $this->email;
+  }
+  public function getLogin()
+  {
+    return $this->login;
+  }
+  public function getSenha()
+  {
+    return $this->senha;
+  }
+  public function getId()
+  {
+    return $this->id;
+  }
+  public function getAtivo()
+  {
+    return $this->ativo;
+  }
 }
-?>

@@ -63,6 +63,7 @@
       ?>
     </div>
   </div>
+
   <?php
   //***************************************************
   //DEIXAR DINÂMICO
@@ -75,14 +76,9 @@
   //PONTO DE MELHORIA
 
   $retornoCompra = $objetoRetorno->devolveCompra($idCompra);
-  /*  echo "<pre>";
-        print_r($retornoCompra);
-        echo "</pre>";*/
   $retornoItensCompra = $objetoRetorno->produtosCompra($idCompra);
-  /*  echo "<pre>";
-          print_r($retornoItensCompra);
-          echo "</pre>";*/
   ?>
+
   <h4>Cliente: <?= $retornoCompra[0]["nome"] ?></h4>
   <h5>Busca de Produto</h5>
   <div class="alert alert-dark" role="alert">
@@ -189,12 +185,11 @@
                 </tr>
               <?php
                 $total = $total + $totalProduto;
-              } //fecha foreach
+              } 
+              //fecha foreach
               ?>
             </table>
           </div>
-
-
 
           <div class="row">
             <div class="alert alert-success" role="alert">

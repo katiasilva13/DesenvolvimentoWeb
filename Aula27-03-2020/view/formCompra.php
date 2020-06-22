@@ -1,7 +1,6 @@
 <?php require_once("../verificarLogin.php"); ?>
 
 <?php require_once("header.php"); ?>
-<!-- <div class="container-fluid"> utilizado para largura total-->
 
 <div class="container">
   <!-- Conteúdo aqui -->

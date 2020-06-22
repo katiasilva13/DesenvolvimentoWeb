@@ -30,7 +30,6 @@
           <?php
           $tipo = "produto";
           include("../controller/relatorioProduto.php");
-          //print_r($retorno);
 
           foreach ($retorno as $value) {
             $id = $value["id"];
