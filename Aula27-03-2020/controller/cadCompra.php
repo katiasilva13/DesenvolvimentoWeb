@@ -10,8 +10,9 @@
         include("../model/Compra.php");
         $insertCompra = new Compra();
         $idCompra = $insertCompra->addCompra($idUsuario, $formaPagamento);
-    //  print_r( $idCompra); 
-  //            exit;
+        
+       // echo $idUsuario . " " . $formaPagamento;
+       // exit;
         if ($idCompra){          
           header('location: ../view/formItensCompra.php?mensagem=compraSucesso&idCompra='.$idCompra);
         }else{

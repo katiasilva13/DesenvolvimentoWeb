@@ -85,7 +85,7 @@ class itensCompra
       $retornoBanco = array();
       while ($linha = $busca->fetch_assoc()) {
         //echo $row["nome"];
-        $retornoBanco[] = $linha;
+        $retornoBanco = (object) $linha;
       }
       return $retornoBanco;
     } else {
@@ -93,7 +93,7 @@ class itensCompra
     }
   }
   
-  /* public function removerItem($id) {
+  public function removerItem($id) {
     $this->id = $id;
 
     if ($this->getConexao()) {
@@ -109,42 +109,23 @@ class itensCompra
     } else {
       echo "Não conectado ao BD";
     }
-  } */
+  }
   
- public function removerItem($id) {
-    $this->id = $id;
+  public function alterarItem(){
+      $id_item = $_POST["id_item"];
+      $qtd = $_POST["qtd"];
 
-    if ($this->getConexao()) {
-      $idItensCompra = $this->relatorio($id);
+      
+      if ($this->getConexao()) {
+        $query = "update itensCompra set quantidade = $qtd where id = $id_item";
+        $update = $this->conexao->query($query);
 
-      $pdo = new PDO('mysql:host=localhost;dbname=unifamma', 'root', '');
-      $sql = "UPDATE produto SET qtd= qtd +? WHERE id=?";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute([$idItensCompra[0]['quantidade'],$idItensCompra[0]['idProduto']]);
-      $inserted = $stmt->rowCount();
-
-      if ($inserted != 0) {
-
-    $query = "DELETE FROM itensCompra WHERE id = '{$this->getId()}'";
-          $delete = $this->conexao->query($query);
-          //verificar se a tabela foi afetada
-          if ($this->conexao->affected_rows) {
-            return 1;
-          } else {
-            return 0;
-          }
-    
-  } else {
-    return 0;
-  }
-
-     
-    } else {
-      echo "Não conectado ao BD";
-    }
-  }
-
-  public function alterarItem($nomeProduto, $qtd, $desconto, $id){
+        if($this->conexao->affected_rows) {
+          return 1;
+        }else {
+          return 0;
+        }
+      }     
 
   }
   
@@ -158,3 +139,4 @@ public function getDesconto(){ return $this->desconto;}
 public function getPrecoProduto(){ return $this->precoProduto;}
 public function getPrecoOriginalProduto(){ return $this->precoOriginalProduto;}
 }
+?>
