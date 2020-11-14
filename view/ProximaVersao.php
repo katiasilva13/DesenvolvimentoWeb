@@ -1,5 +1,5 @@
 <?php
-//require_once("../verificarLogin.php");
+require_once("../verificarLogin.php");
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" dir="ltr">
